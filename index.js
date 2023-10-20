@@ -41,6 +41,10 @@ class RefResolver {
     return getDataByJSONPointer(schema.schema, jsonPointer)
   }
 
+  hasSchema (schemaId) {
+    return this.#schemas[schemaId] !== undefined
+  }
+
   getSchemaRefs (schemaId) {
     const schema = this.#schemas[schemaId]
     if (schema === undefined) {

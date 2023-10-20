@@ -28,6 +28,13 @@ declare class RefResolver {
   getSchema(schemaId: string, jsonPointer?: string): any | null;
 
   /**
+   * Returns true if the schema by the given schema id is added to the resolver.
+   * @param {string} schemaId - The schema id of the schema to be checked.
+   * @returns {boolean} True if the schema by the given schema id is added to the resolver.
+   */
+  hasSchema(schemaId: string): boolean;
+
+  /**
    * Returns the schema references of the schema by the given schema id.
    * @param {string} schemaId - The schema id of the schema whose references are to be returned.
    * @returns {Array<{ schemaId: string; jsonPointer: string }>} The schema references of the schema by the given schema id.
