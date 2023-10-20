@@ -196,3 +196,21 @@ test('should not use a root $id if it is an anchor', () => {
   const resolvedSchema3 = refResolver.getSchema(schemaIdArgument, schemaIdProperty)
   assert.equal(resolvedSchema3, schema)
 })
+
+test('should return null if sub schema by json pointer is not found', () => {
+  const refResolver = new RefResolver()
+
+  const schemaId = 'schemaId'
+  const schema = {
+    $id: 'schemaId',
+    type: 'object',
+    properties: {
+      foo: { type: 'string' }
+    }
+  }
+
+  refResolver.addSchema(schema)
+
+  const schemaRefs = refResolver.getSchema(schemaId, '#/missingSchema')
+  assert.equal(schemaRefs, null)
+})

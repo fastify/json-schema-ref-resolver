@@ -257,7 +257,7 @@ function getDataByJSONPointer (data, jsonPointer) {
     }
     current = current[part]
   }
-  return current
+  return current ?? null
 }
 
 module.exports = { RefResolver }
