@@ -49,6 +49,8 @@ test('should fail to find a schema using an anchor instead of schema id', () => 
   try {
     refResolver.getSchema(subSchemaAnchor)
   } catch (err) {
-    assert.equal(err.message, 'Schema with id "#subSchemaId" is not found.')
+    assert.equal(
+      err.message, 'Cannot resolve ref "#subSchemaId#". Schema with id "#subSchemaId" is not found.'
+    )
   }
 })

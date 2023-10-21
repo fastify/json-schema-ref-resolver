@@ -164,7 +164,10 @@ test('root $id has higher priority than a schemaId argument', () => {
     refResolver.getSchema(schemaIdArgument)
     assert.fail('should have thrown an error')
   } catch (err) {
-    assert.equal(err.message, `Schema with id "${schemaIdArgument}" is not found.`)
+    assert.equal(
+      err.message,
+      `Cannot resolve ref "${schemaIdArgument}#". Schema with id "${schemaIdArgument}" is not found.`
+    )
   }
 })
 
@@ -187,7 +190,10 @@ test('should not use a root $id if it is an anchor', () => {
     refResolver.getSchema(schemaIdProperty)
     assert.fail('should have thrown an error')
   } catch (err) {
-    assert.equal(err.message, `Schema with id "${schemaIdProperty}" is not found.`)
+    assert.equal(
+      err.message,
+      `Cannot resolve ref "${schemaIdProperty}#". Schema with id "${schemaIdProperty}" is not found.`
+    )
   }
 
   const resolvedSchema2 = refResolver.getSchema(schemaIdArgument)
