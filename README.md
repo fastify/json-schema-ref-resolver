@@ -28,7 +28,7 @@ npm install json-schema-ref-resolver
 
 ```javascript
 const assert = require('node:assert')
-const { RefResolver } = require('@fastify/json-schema-ref-resolver')
+const { RefResolver } = require('json-schema-ref-resolver')
 
 const sourceSchema = {
   $id: 'sourceSchema',
@@ -49,7 +49,7 @@ const targetSchema = {
   }
 }
 
-const resolver = new RefResolver()
+const refResolver = new RefResolver()
 
 refResolver.addSchema(sourceSchema)
 refResolver.addSchema(targetSchema)
@@ -105,7 +105,7 @@ _Example:_
 
 ```javascript
 const assert = require('node:assert')
-const { RefResolver } = require('@fastify/json-schema-ref-resolver')
+const { RefResolver } = require('json-schema-ref-resolver')
 
 const schema = {
   $id: 'schema',
@@ -115,13 +115,13 @@ const schema = {
   }
 }
 
-const resolver = new RefResolver()
-resolver.addSchema(schema)
+const refResolver = new RefResolver()
+refResolver.addSchema(schema)
 
-const rootSchema = resolver.getSchema(schema.$id)
+const rootSchema = refResolver.getSchema(schema.$id)
 assert.deepStrictEqual(rootSchema, schema)
 
-const subSchema = resolver.getSchema(schema.$id, '#/properties/foo')
+const subSchema = refResolver.getSchema(schema.$id, '#/properties/foo')
 assert.deepStrictEqual(subSchema, { type: 'string' })
 ```
 
@@ -131,7 +131,7 @@ _Example:_
 
 ```javascript
 const assert = require('node:assert')
-const { RefResolver } = require('@fastify/json-schema-ref-resolver')
+const { RefResolver } = require('json-schema-ref-resolver')
 
 const schema = {
   $id: 'schema',
@@ -143,10 +143,10 @@ const schema = {
   }
 }
 
-const resolver = new RefResolver()
-resolver.addSchema(schema)
+const refResolver = new RefResolver()
+refResolver.addSchema(schema)
 
-const anchorSchema = resolver.getSchema(schema.$id, '#bar')
+const anchorSchema = refResolver.getSchema(schema.$id, '#bar')
 assert.deepStrictEqual(subSchema, {
   $id: '#bar',
   type: 'string'
@@ -171,7 +171,7 @@ _Example:_
 ```javascript
 const assert = require('node:assert')
 
-const { RefResolver } = require('@fastify/json-schema-ref-resolver')
+const { RefResolver } = require('json-schema-ref-resolver')
 
 const sourceSchema = {
   $id: 'sourceSchema',
@@ -216,7 +216,7 @@ _Example:_
 ```javascript
 const assert = require('node:assert')
 
-const { RefResolver } = require('@fastify/json-schema-ref-resolver')
+const { RefResolver } = require('json-schema-ref-resolver')
 
 const targetSchema1 = {
   $id: 'targetSchema1',
@@ -265,7 +265,7 @@ _Example_
 
 ```javascript
 const assert = require('node:assert')
-const { RefResolver } = require('@fastify/json-schema-ref-resolver')
+const { RefResolver } = require('json-schema-ref-resolver')
 
 const sourceSchema = {
   $id: 'sourceSchema',
@@ -286,7 +286,7 @@ const targetSchema = {
   }
 }
 
-const resolver = new RefResolver()
+const refResolver = new RefResolver()
 
 refResolver.addSchema(sourceSchema)
 refResolver.addSchema(targetSchema)
@@ -321,7 +321,7 @@ _Example:_
 
 ```javascript
 const assert = require('node:assert')
-const { RefResolver } = require('@fastify/json-schema-ref-resolver')
+const { RefResolver } = require('json-schema-ref-resolver')
 
 const sourceSchema = {
   $id: 'sourceSchema',
@@ -342,7 +342,7 @@ const targetSchema = {
   }
 }
 
-const resolver = new RefResolver()
+const refResolver = new RefResolver()
 
 refResolver.addSchema(sourceSchema)
 refResolver.addSchema(targetSchema)
@@ -367,7 +367,7 @@ _Example:_
 
 ```javascript
 const assert = require('node:assert')
-const { RefResolver } = require('@fastify/json-schema-ref-resolver')
+const { RefResolver } = require('json-schema-ref-resolver')
 
 const targetSchema = {
   $id: 'targetSchema',
@@ -390,9 +390,9 @@ const sourceSchema = {
   }
 }
 
-const resolver = new RefResolver()
-resolver.addSchema(targetSchema)
-resolver.addSchema(sourceSchema)
+const refResolver = new RefResolver()
+refResolver.addSchema(targetSchema)
+refResolver.addSchema(sourceSchema)
 
-resolver.derefSchema('sourceSchema') // Throws an error
+refResolver.derefSchema('sourceSchema') // Throws an error
 ```
