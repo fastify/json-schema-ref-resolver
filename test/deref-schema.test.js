@@ -228,6 +228,9 @@ test('should throw if target ref schema is not found', () => {
   try {
     refResolver.derefSchema('relativeAddress')
   } catch (error) {
-    assert.strictEqual(error.message, 'Cannot resolve ref "#foo".')
+    assert.strictEqual(
+      error.message,
+      'Cannot resolve ref "#foo". Ref #foo is not found in schema "relativeAddress".'
+    )
   }
 })
