@@ -230,7 +230,7 @@ test('should throw if target ref schema is not found', () => {
   } catch (error) {
     assert.strictEqual(
       error.message,
-      'Cannot resolve ref "#foo". Ref #foo is not found in schema "relativeAddress".'
+      'Cannot resolve ref "#foo". Ref "#foo" is not found in schema "relativeAddress".'
     )
   }
 })

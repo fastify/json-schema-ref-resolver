@@ -99,7 +99,7 @@ class RefResolver {
       const targetSchema = this.getDerefSchema(refSchemaId, refJsonPointer)
       if (targetSchema === null) {
         throw new Error(
-          `Cannot resolve ref "${ref.ref}". Ref ${refJsonPointer} is not found in schema "${refSchemaId}".`
+          `Cannot resolve ref "${ref.ref}". Ref "${refJsonPointer}" is not found in schema "${refSchemaId}".`
         )
       }
 
