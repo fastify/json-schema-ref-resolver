@@ -192,3 +192,45 @@ test('should clone schema without refs', () => {
     }
   })
 })
+
+test('should throw if target ref schema is not found', () => {
+  const inputSchema = {
+    $id: 'http://example.com/root.json',
+    definitions: {
+      A: { $id: '#foo' },
+      B: {
+        $id: 'other.json',
+        definitions: {
+          X: { $id: '#bar', type: 'string' },
+          Y: { $id: 't/inner.json' }
+        }
+      },
+      C: {
+        $id: 'urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f',
+        type: 'object'
+      }
+    }
+  }
+
+  const addresSchema = {
+    $id: 'relativeAddress', // Note: prefer always absolute URI like: http://mysite.com
+    type: 'object',
+    properties: {
+      zip: { $ref: 'urn:uuid:ee564b8a-7a87-4125-8c96-e9f123d6766f' },
+      city2: { $ref: '#foo' }
+    }
+  }
+
+  const refResolver = new RefResolver()
+  refResolver.addSchema(inputSchema)
+  refResolver.addSchema(addresSchema)
+
+  try {
+    refResolver.derefSchema('relativeAddress')
+  } catch (error) {
+    assert.strictEqual(
+      error.message,
+      'Cannot resolve ref "#foo". Ref "#foo" is not found in schema "relativeAddress".'
+    )
+  }
+})

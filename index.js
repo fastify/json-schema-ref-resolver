@@ -97,6 +97,12 @@ class RefResolver {
       } = this.#parseSchemaRef(ref.ref, ref.sourceSchemaId)
 
       const targetSchema = this.getDerefSchema(refSchemaId, refJsonPointer)
+      if (targetSchema === null) {
+        throw new Error(
+          `Cannot resolve ref "${ref.ref}". Ref "${refJsonPointer}" is not found in schema "${refSchemaId}".`
+        )
+      }
+
       ref.targetSchema = targetSchema
       ref.targetSchemaId = refSchemaId
     }
