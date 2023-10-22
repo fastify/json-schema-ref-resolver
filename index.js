@@ -33,7 +33,9 @@ class RefResolver {
   getSchema (schemaId, jsonPointer = '#') {
     const schema = this.#schemas[schemaId]
     if (schema === undefined) {
-      throw new Error(`Schema with id "${schemaId}" is not found.`)
+      throw new Error(
+        `Cannot resolve ref "${schemaId}${jsonPointer}". Schema with id "${schemaId}" is not found.`
+      )
     }
     if (schema.anchors[jsonPointer] !== undefined) {
       return schema.anchors[jsonPointer]
