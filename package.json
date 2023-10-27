@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "JSON schema reference resolver",
   "main": "index.js",
+  "type": "commonjs",
   "types": "types/index.d.ts",
   "scripts": {
     "lint": "standard",
