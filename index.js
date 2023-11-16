@@ -19,15 +19,41 @@ class RefResolver {
     this.#cloneSchemaWithoutRefs = opts.cloneSchemaWithoutRefs ?? false
   }
 
-  addSchema (schema, schemaId) {
-    if (schema.$id !== undefined && schema.$id.charAt(0) !== '#') {
-      // Schema has an $id that is not an anchor
-      schemaId = schema.$id
-    } else {
-      // Schema has no $id or $id is an anchor
-      this.#insertSchemaBySchemaId(schema, schemaId)
+  addSchema (schema, rootSchemaId, isRootSchema = true) {
+    if (isRootSchema) {
+      if (schema.$id !== undefined && schema.$id.charAt(0) !== '#') {
+        // Schema has an $id that is not an anchor
+        rootSchemaId = schema.$id
+      } else {
+        // Schema has no $id or $id is an anchor
+        this.#insertSchemaBySchemaId(schema, rootSchemaId)
+      }
     }
-    this.#addSchema(schema, schemaId)
+
+    const schemaId = schema.$id
+    if (schemaId !== undefined && typeof schemaId === 'string') {
+      if (schemaId.charAt(0) === '#') {
+        this.#insertSchemaByAnchor(schema, rootSchemaId, schemaId)
+      } else {
+        this.#insertSchemaBySchemaId(schema, schemaId)
+        rootSchemaId = schemaId
+      }
+    }
+
+    const ref = schema.$ref
+    if (ref !== undefined && typeof ref === 'string') {
+      const { refSchemaId, refJsonPointer } = this.#parseSchemaRef(ref, rootSchemaId)
+      this.#schemas[rootSchemaId].refs.push({
+        schemaId: refSchemaId,
+        jsonPointer: refJsonPointer
+      })
+    }
+
+    for (const key in schema) {
+      if (typeof schema[key] === 'object' && schema[key] !== null) {
+        this.addSchema(schema[key], rootSchemaId, false)
+      }
+    }
   }
 
   getSchema (schemaId, jsonPointer = '#') {
@@ -60,7 +86,11 @@ class RefResolver {
 
     for (const ref of schema.refs) {
       const dependencySchemaId = ref.schemaId
-      if (dependencies[dependencySchemaId] !== undefined) continue
+      if (
+        dependencySchemaId === schemaId ||
+        dependencies[dependencySchemaId] !== undefined
+      ) continue
+
       dependencies[dependencySchemaId] = this.getSchema(dependencySchemaId)
       this.getSchemaDependencies(dependencySchemaId, dependencies)
     }
@@ -84,12 +114,12 @@ class RefResolver {
     }
 
     const refs = []
-    this.#addDerefSchema(schema.schema, schemaId, refs)
+    this.#addDerefSchema(schema.schema, schemaId, true, refs)
 
     const dependencies = this.getSchemaDependencies(schemaId)
     for (const schemaId in dependencies) {
       const schema = dependencies[schemaId]
-      this.#addDerefSchema(schema, schemaId, refs)
+      this.#addDerefSchema(schema, schemaId, true, refs)
     }
 
     for (const ref of refs) {
@@ -140,35 +170,18 @@ class RefResolver {
     }
   }
 
-  #addSchema (schema, rootSchemaId) {
-    const schemaId = schema.$id
-    if (schemaId !== undefined && typeof schemaId === 'string') {
-      if (schemaId.charAt(0) === '#') {
-        this.#insertSchemaByAnchor(schema, rootSchemaId, schemaId)
-      } else {
-        this.#insertSchemaBySchemaId(schema, schemaId)
-        rootSchemaId = schemaId
-      }
-    }
-
-    const ref = schema.$ref
-    if (ref !== undefined && typeof ref === 'string') {
-      const { refSchemaId, refJsonPointer } = this.#parseSchemaRef(ref, rootSchemaId)
-      this.#schemas[rootSchemaId].refs.push({
-        schemaId: refSchemaId,
-        jsonPointer: refJsonPointer
-      })
-    }
-
-    for (const key in schema) {
-      if (typeof schema[key] === 'object' && schema[key] !== null) {
-        this.#addSchema(schema[key], rootSchemaId)
-      }
-    }
-  }
-
-  #addDerefSchema (schema, rootSchemaId, refs = []) {
+  #addDerefSchema (schema, rootSchemaId, isRootSchema, refs = []) {
     const derefSchema = Array.isArray(schema) ? [...schema] : { ...schema }
+
+    if (isRootSchema) {
+      if (schema.$id !== undefined && schema.$id.charAt(0) !== '#') {
+        // Schema has an $id that is not an anchor
+        rootSchemaId = schema.$id
+      } else {
+        // Schema has no $id or $id is an anchor
+        this.#insertDerefSchemaBySchemaId(derefSchema, rootSchemaId)
+      }
+    }
 
     const schemaId = derefSchema.$id
     if (schemaId !== undefined && typeof schemaId === 'string') {
@@ -191,7 +204,7 @@ class RefResolver {
     for (const key in derefSchema) {
       const value = derefSchema[key]
       if (typeof value === 'object' && value !== null) {
-        derefSchema[key] = this.#addDerefSchema(value, rootSchemaId, refs)
+        derefSchema[key] = this.#addDerefSchema(value, rootSchemaId, false, refs)
       }
     }
 

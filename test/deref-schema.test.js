@@ -234,3 +234,54 @@ test('should throw if target ref schema is not found', () => {
     )
   }
 })
+
+test('should deref schema without root $id', () => {
+  const refResolver = new RefResolver()
+
+  const schemaId = 'schemaId1'
+  const schema = {
+    type: 'object',
+    definitions: {
+      id1: {
+        type: 'object',
+        properties: {
+          id1: {
+            type: 'integer'
+          }
+        }
+      }
+    },
+    allOf: [
+      {
+        $ref: '#/definitions/id1'
+      }
+    ]
+  }
+
+  refResolver.addSchema(schema, schemaId)
+  const derefSchema = refResolver.getDerefSchema(schemaId)
+
+  assert.deepStrictEqual(derefSchema, {
+    type: 'object',
+    definitions: {
+      id1: {
+        type: 'object',
+        properties: {
+          id1: {
+            type: 'integer'
+          }
+        }
+      }
+    },
+    allOf: [
+      {
+        type: 'object',
+        properties: {
+          id1: {
+            type: 'integer'
+          }
+        }
+      }
+    ]
+  })
+})
