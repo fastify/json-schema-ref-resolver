@@ -1,6 +1,6 @@
 'use strict'
 
-const deepEqual = require('fast-deep-equal')
+const { dequal: deepEqual } = require('dequal')
 
 const jsonSchemaRefSymbol = Symbol.for('json-schema-ref')
 
