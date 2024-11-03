@@ -4,7 +4,7 @@
   * @constructor
   */
 declare class RefResolver {
-  
+
   /**
    * @param {object} opts - Options for the resolver.
    * @param {boolean} opts.allowEqualDuplicates - Whether to allow schemas with equal ids to be added to the resolver.
