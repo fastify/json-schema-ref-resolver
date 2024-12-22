@@ -33,6 +33,16 @@
   "author": "Ivan Tymoshenko <ivan@tymoshenko.me>",
   "license": "MIT",
   "homepage": "https://github.com/fastify/json-schema-ref-resolver#readme",
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/fastify"
+    },
+    {
+      "type": "opencollective",
+      "url": "https://opencollective.com/fastify"
+    }
+  ],
   "dependencies": {
     "dequal": "^2.0.3"
   },
