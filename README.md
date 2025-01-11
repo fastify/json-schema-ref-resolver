@@ -1,5 +1,9 @@
 # json-schema-ref-resolver
 
+[![CI](https://github.com/fastify/json-schema-ref-resolver/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/fastify/json-schema-ref-resolver/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/json-schema-ref-resolver)](https://www.npmjs.com/package/json-schema-ref-resolver)
+[![neostandard javascript style](https://img.shields.io/badge/code_style-neostandard-brightgreen?style=flat)](https://github.com/neostandard/neostandard)
+
 __json-schema-ref-resolver__ is a javascript library that resolves references in [JSON schemas](https://json-schema.org/draft/2020-12/json-schema-core#name-introduction).
 
 - [Installation](#installation)
@@ -255,7 +259,7 @@ assert.deepStrictEqual(dependencies, { targetSchema1, targetSchema2 })
 
 #### derefSchema(schemaId)
 
-Dereferences all references in the schema. All dependency also will be dereferenced. If schema with the specified id is not found, an error will be thrown.
+Dereferences all references in the schema. All dependencies will also be dereferenced. If schema with the specified id is not found, an error will be thrown.
 
 - `schemaId` __\<string\>__ - schema id of the schema to dereference.
 
@@ -361,7 +365,7 @@ assert.deepStrictEqual(derefSourceSchema, {
 
 #### Caveats
 
-- If a reference schema and a source schema have a key with the same name and different values, an error will be throwing during a call to `derefSchema` or `getDerefSchema`.
+- If a reference schema and a source schema have a key with the same name and different values, an error will be thrown during a call to `derefSchema` or `getDerefSchema`.
 
 _Example:_
 
@@ -396,3 +400,7 @@ refResolver.addSchema(sourceSchema)
 
 refResolver.derefSchema('sourceSchema') // Throws an error
 ```
+
+## License
+
+Licensed under [MIT](./LICENSE).
