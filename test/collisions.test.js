@@ -194,6 +194,6 @@ test('should throw if there is the same anchor in the same schema', () => {
     refResolver.addSchema(schema)
     assert.fail('should throw')
   } catch (err) {
-    assert.equal(err.message, 'There is already another anchor "#subSchemaId" in a schema "schemaId1".')
+    assert.equal(err.message, 'There is already another anchor "#subSchemaId" in schema "schemaId1".')
   }
 })

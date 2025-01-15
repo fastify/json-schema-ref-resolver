@@ -45,7 +45,7 @@ test('should throw id source schema has a key with a same key as ref schema, but
   } catch (err) {
     assert.strictEqual(
       err.message,
-      'Cannot resolve ref "schemaId2". Property "properties" is already exist in schema "schemaId1".'
+      'Cannot resolve ref "schemaId2". Property "properties" already exists in schema "schemaId1".'
     )
   }
 })

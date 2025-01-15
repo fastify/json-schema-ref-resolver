@@ -230,7 +230,7 @@ class RefResolver {
       if (sourceSchema[key] !== undefined) {
         if (deepEqual(sourceSchema[key], targetSchema[key])) continue
         throw new Error(
-          `Cannot resolve ref "${ref.ref}". Property "${key}" is already exist in schema "${ref.sourceSchemaId}".`
+          `Cannot resolve ref "${ref.ref}". Property "${key}" already exists in schema "${ref.sourceSchemaId}".`
         )
       }
       sourceSchema[key] = targetSchema[key]
@@ -250,7 +250,7 @@ class RefResolver {
   #insertSchemaByAnchor (schema, schemaId, anchor) {
     const { anchors } = this.#schemas[schemaId]
     if (anchors[anchor] !== undefined) {
-      throw new Error(`There is already another anchor "${anchor}" in a schema "${schemaId}".`)
+      throw new Error(`There is already another anchor "${anchor}" in schema "${schemaId}".`)
     }
     anchors[anchor] = schema
   }
