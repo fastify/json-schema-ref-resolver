@@ -31,6 +31,26 @@
     "swagger"
   ],
   "author": "Ivan Tymoshenko <ivan@tymoshenko.me>",
+  "contributors": [
+    {
+      "name": "Matteo Collina",
+      "email": "hello@matteocollina.com"
+    },
+    {
+      "name": "James Sumners",
+      "url": "https://james.sumners.info"
+    },
+    {
+      "name": "Gürgün Dayıoğlu",
+      "email": "hey@gurgun.day",
+      "url": "https://heyhey.to/G"
+    },
+    {
+      "name": "Frazer Smith",
+      "email": "frazer.dev@icloud.com",
+      "url": "https://github.com/fdawgs"
+    }
+  ],
   "license": "MIT",
   "homepage": "https://github.com/fastify/json-schema-ref-resolver#readme",
   "funding": [
