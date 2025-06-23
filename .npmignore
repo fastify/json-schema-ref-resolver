@@ -1,0 +1,5 @@
+.gitattributes
+.github
+scripts
+test
+**/*.test-d.ts
