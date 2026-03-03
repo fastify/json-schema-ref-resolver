@@ -196,7 +196,7 @@ test('should resolve schema with circular reference', () => {
       }
     }
   }
-  expectedSchema.properties.foo.properties.foo = expectedSchema.properties.foo
+  expectedSchema.properties.foo.properties = expectedSchema.properties
   assert.deepStrictEqual(derefSchema, expectedSchema)
 })
 
@@ -243,7 +243,8 @@ test('should resolve schema with cross circular reference', () => {
       }
     }
   }
-  expectedSchema1.properties.foo.properties.bar.properties.foo = expectedSchema1.properties.foo
+  expectedSchema1.properties.foo.properties.bar.properties =
+  expectedSchema1.properties
 
   const expectedSchema2 = {
     $id: schemaId2,
@@ -260,8 +261,7 @@ test('should resolve schema with cross circular reference', () => {
       }
     }
   }
-  expectedSchema2.properties.bar.properties.foo.properties.bar = expectedSchema2.properties.bar
-
+  expectedSchema2.properties.bar.properties.foo.properties = expectedSchema2.properties
   assert.deepStrictEqual(derefSchema1, expectedSchema1)
   assert.deepStrictEqual(derefSchema2, expectedSchema2)
 })
