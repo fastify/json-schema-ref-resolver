@@ -8,8 +8,8 @@ const resolver = new RefResolver({
 expect(resolver.addSchema({})).type.toBe<void>()
 expect(resolver.addSchema({}, 'schemaId')).type.toBe<void>()
 
-expect(resolver.getSchema('schemaId') as unknown).type.toBeAssignableTo<unknown>()
-expect(resolver.getSchema('schemaId', 'jsonPointer') as unknown).type.toBeAssignableTo<unknown>()
+expect(resolver.getSchema('schemaId')).type.toBe<any>()
+expect(resolver.getSchema('schemaId', 'jsonPointer')).type.toBe<any>()
 
 expect(resolver.hasSchema('schemaId')).type.toBe<boolean>()
 
@@ -19,5 +19,5 @@ expect(resolver.getSchemaDependencies('schemaId')).type.toBe<{ [key: string]: an
 
 expect(resolver.derefSchema('schemaId')).type.toBe<void>()
 
-expect(resolver.getDerefSchema('schemaId') as unknown).type.toBeAssignableTo<unknown>()
-expect(resolver.getDerefSchema('schemaId', 'jsonPointer') as unknown).type.toBeAssignableTo<unknown>()
+expect(resolver.getDerefSchema('schemaId')).type.toBe<any>()
+expect(resolver.getDerefSchema('schemaId', 'jsonPointer')).type.toBe<any>()
