@@ -4,6 +4,10 @@ const { dequal: deepEqual } = require('dequal')
 
 const jsonSchemaRefSymbol = Symbol.for('json-schema-ref')
 
+// the keywords whose value is data, not a schema: a $ref or an $id inside them is a property
+// name of the instance, not a reference
+const dataKeywords = new Set(['default', 'const', 'enum', 'examples'])
+
 class RefResolver {
   #schemas
   #derefSchemas
@@ -50,6 +54,7 @@ class RefResolver {
     }
 
     for (const key in schema) {
+      if (dataKeywords.has(key)) continue
       if (typeof schema[key] === 'object' && schema[key] !== null) {
         this.addSchema(schema[key], rootSchemaId, false)
       }
@@ -202,6 +207,7 @@ class RefResolver {
     }
 
     for (const key in derefSchema) {
+      if (dataKeywords.has(key)) continue
       const value = derefSchema[key]
       if (typeof value === 'object' && value !== null) {
         derefSchema[key] = this.#addDerefSchema(value, rootSchemaId, false, refs)
