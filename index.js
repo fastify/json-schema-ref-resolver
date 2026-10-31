@@ -276,7 +276,7 @@ function getDataByJSONPointer (data, jsonPointer) {
     if (typeof current !== 'object' || current === null) {
       return null
     }
-    current = current[part]
+    current = current[part.replace(/~1/g, '/').replace(/~0/g, '~')]
   }
   return current ?? null
 }

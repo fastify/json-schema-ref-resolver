@@ -4,6 +4,38 @@ const assert = require('node:assert/strict')
 const { test } = require('node:test')
 const { RefResolver } = require('../index.js')
 
+test('should dereference escaped JSON Pointer tokens', () => {
+  const refResolver = new RefResolver()
+  refResolver.addSchema({
+    $id: 'target',
+    definitions: {
+      'a/b': { type: 'integer' },
+      'm~n': { type: 'number' },
+      'a~1b': { type: 'string' }
+    }
+  })
+  refResolver.addSchema({
+    $id: 'source',
+    type: 'object',
+    properties: {
+      slash: { $ref: 'target#/definitions/a~1b' },
+      tilde: { $ref: 'target#/definitions/m~0n' },
+      literalEscape: { $ref: 'target#/definitions/a~01b' }
+    }
+  })
+
+  assert.deepStrictEqual(refResolver.getDerefSchema('source'), {
+    $id: 'source',
+    type: 'object',
+    properties: {
+      slash: { type: 'integer' },
+      tilde: { type: 'number' },
+      literalEscape: { type: 'string' }
+    }
+  })
+  assert.deepStrictEqual(refResolver.getDerefSchema('target', '#/definitions/a~1b'), { type: 'integer' })
+})
+
 test('should resolve reference', () => {
   const refResolver = new RefResolver()
 

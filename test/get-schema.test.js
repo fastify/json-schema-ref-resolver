@@ -4,6 +4,25 @@ const assert = require('node:assert/strict')
 const { test } = require('node:test')
 const { RefResolver } = require('../index.js')
 
+test('should decode escaped JSON Pointer tokens', () => {
+  const refResolver = new RefResolver()
+  const schema = {
+    $id: 'schema',
+    definitions: {
+      'a/b': { type: 'integer' },
+      'm~n': { type: 'number' },
+      'a~1b': { type: 'string' },
+      'a//b': { type: 'boolean' }
+    }
+  }
+  refResolver.addSchema(schema)
+
+  assert.equal(refResolver.getSchema('schema', '#/definitions/a~1b'), schema.definitions['a/b'])
+  assert.equal(refResolver.getSchema('schema', '#/definitions/m~0n'), schema.definitions['m~n'])
+  assert.equal(refResolver.getSchema('schema', '#/definitions/a~01b'), schema.definitions['a~1b'])
+  assert.equal(refResolver.getSchema('schema', '#/definitions/a~1~1b'), schema.definitions['a//b'])
+})
+
 test('should get schema by schema id', () => {
   const refResolver = new RefResolver()
 
